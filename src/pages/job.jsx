@@ -3,7 +3,7 @@ import { IconButton, Typography } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Route, Navigate } from "react-router-dom";
 
 function JobPage() {
   const [active, setActive] = useState(1);
@@ -68,6 +68,7 @@ function JobPage() {
   };
 
   return (
+  <>
     <MainLayout>
       <div className="bg-gray-50 h-full">
         <div className="mx-4 my-4">
@@ -161,7 +162,7 @@ function JobPage() {
                             {job.location}
                           </h1>
                           <h1 className="text-xs text-gray-600 font-normal">
-                            {job.created_at}
+                            {job.last_posted}
                           </h1>
                         </div>
                       </div>
@@ -207,6 +208,8 @@ function JobPage() {
         </div>
       </div>
     </MainLayout>
+  </>
+    
   );
 }
 
