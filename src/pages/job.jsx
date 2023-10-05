@@ -3,7 +3,7 @@ import { IconButton, Typography } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Link, Route, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function JobPage() {
   const [active, setActive] = useState(1);
@@ -12,13 +12,14 @@ function JobPage() {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const checkbox = useRef();
+  const nav = useNavigate();
 
   const getJob = async () => {
     let queryParam = "";
-    if (location != "") {
+    if (location !== "") {
       queryParam = `&location=${location}`;
     }
-    if (description != "") {
+    if (description !== "") {
       queryParam += `&description=${description}`;
     }
     if (checkbox.current.checked) {
@@ -43,16 +44,20 @@ function JobPage() {
 
   const fetchJobByParameter = async () => {
     const result = await getJob();
-    console.log(result);
     setJobList(result.data);
     setTotalPage(result.total_pages);
   };
 
   useEffect(() => {
-    getJob().then((result) => {
+    const accessToken = localStorage.getItem(btoa("access_token"));
+    if (!accessToken) nav("/login");
+    else{
+      getJob().then((result) => {
       setJobList(result.data);
       setTotalPage(result.total_pages);
     });
+    }
+    
   }, []);
 
   const next = () => {
